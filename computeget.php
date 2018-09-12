@@ -26,6 +26,10 @@
                     mysqli_query($connect,"UPDATE userpagehis SET pagestate=1 WHERE uhid='$uhid'");
                     sleep(1);
                 }
+                if($shouldPay>0){
+                    $new = '您投注的'.$pagename.'，第'.$expect.'期中奖了，奖金：'.$shouldPay.'元';
+                    mysqli_query($connect,"INSERT INTO news VALUES(NULL,'$userid','$username','$new',time());");
+                }
             }
         }
     }
