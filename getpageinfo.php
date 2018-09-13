@@ -16,7 +16,7 @@
             ];
         }
     }else if($kind == 'gethisinfo'){
-        $res = mysqli_fetch_all(mysqli_query($connect,"SELECT expect,opencode FROM pagehis WHERE pageid='$pid' AND pagename='$pname' ORDER BY hid DESC LIMIT 6"),MYSQLI_ASSOC);
+        $res = mysqli_fetch_all(mysqli_query($connect,"SELECT expect,opencode,opentime FROM pagehis WHERE pageid='$pid' AND pagename='$pname' ORDER BY hid DESC LIMIT 6"),MYSQLI_ASSOC);
         if($res){
             $response = [
                 'code' =>200,

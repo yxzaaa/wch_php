@@ -2,7 +2,11 @@
     require_once './init.php';
     @$kind = $_REQUEST['kind'];
     @$userkind = $_REQUEST['userkind'];
+    @$userid = $_REQUEST['userid'];
+    @$username = $_REQUEST['username'];
     @$pid = $_REQUEST['pid'];
+    @$code = $_REQUEST['code'];
+    @$expect = $_REQUEST['expect'];
     if($kind == 'gettab'){
         $res = mysqli_fetch_all(mysqli_query($connect,"SELECT pid,pagename,icon,pagepath,pageimg FROM pagekind WHERE userkind='$userkind'"),MYSQLI_ASSOC);
         if($res){
@@ -21,6 +25,33 @@
             $response = [
                 'code' => 200,
                 'data' => $res
+            ];
+        }else{
+            $response = [
+                'code' =>400
+            ];
+        }
+    }else if($kind == 'getallpage'){
+        $res = mysqli_fetch_row(mysqli_query($connect,"SELECT userkind FROM wch_users WHERE userid='$userid' AND username='$username'"));
+        if($res[0] == 1){
+            $res = mysqli_fetch_all(mysqli_query($connect,"SELECT * FROM pagekind WHERE ispage=1"),MYSQLI_ASSOC);
+            if($res){
+                $response = [
+                    'code' => 200,
+                    'data' => $res
+                ];
+            }else{
+                $response = [
+                    'code' =>400
+                ];
+            }
+        }
+    }else if($kind == 'changecode'){
+        mysqli_query($connect,"UPDATE pagekind SET opencode='$code' WHERE pid='$pid' AND expect='$expect'");
+        $res = mysqli_affected_rows($connect);
+        if($res>0){
+            $response = [
+                'code' => 200
             ];
         }else{
             $response = [

@@ -17,7 +17,7 @@
             if($num){
                 $numArray = explode(',',$num[0]);
                 $shouldPay = computeGet($playname,$pagenums,$pagebei,$playkind,$numArray);
-                mysqli_query($connect,"UPDATE userpagehis SET pageget='$shouldPay' WHERE userid='$userid' AND username='$username'");
+                mysqli_query($connect,"UPDATE userpagehis SET pageget='$shouldPay' WHERE uhid='$uhid'");
                 $rest = mysqli_fetch_row(mysqli_query($connect,"SELECT restmoney FROM wch_users WHERE userid='$userid' AND username='$username'"));
                 if($rest){
                     $resmoney = $shouldPay + $rest[0];
