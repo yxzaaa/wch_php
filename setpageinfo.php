@@ -1,19 +1,25 @@
 <?php
     require_once './init.php';
-    $res = mysqli_fetch_all(mysqli_query($connect,'SELECT pid,pagename,count,opentimestamp,delaytime,opencode,expect,opentime FROM pagekind WHERE ispage=1'),MYSQLI_ASSOC);
+    //查询本期信息
+    $sql = "SELECT pid,pagename,count,opentimestamp,delaytime,opencode,expect,opentime FROM pagekind WHERE ispage=1";
+    $res = fetchRows($connect,$sql);
     $t = time();
-    for($i=0;$i<count($res);$i++){
-        $pid = $res[$i]['pid'];
-        $pagename = $res[$i]['pagename'];
-        $opentimestamp = $res[$i]['opentimestamp'];
-        $opentime = $res[$i]['opentime'];
-        $expect = $res[$i]['expect'];
-        $opencode = $res[$i]['opencode'];
-        $delaytime = intval($res[$i]['delaytime']);
+    //遍历本期信息
+    foreach($res as $r){
+        $pid = $r['pid'];
+        $pagename = $r['pagename'];
+        $opentimestamp = $r['opentimestamp'];
+        $opentime = $r['opentime'];
+        $expect = $r['expect'];
+        $opencode = $r['opencode'];
+        $delaytime = intval($r['delaytime']);
+        //准备开奖
         if($pagename != '重庆时时彩' && $pagename != '北京赛车'){
             if($t>=$opentimestamp){
+                //将本期信息加入历史开奖记录
                 $sql = "INSERT INTO pagehis VALUES(NULL,'$pid','$pagename','$expect','$opencode','$opentimestamp','$opentime');";
-                mysqli_query($connect,$sql);
+                add($connect,$sql);
+                //开始计算下一期开奖信息：开奖号码，开奖时间戳，开奖期号，开奖时间等
                 if($opentimestamp == ''){
                     $opentimestamp = $t;
                 }else{
@@ -22,7 +28,7 @@
                 if($t>=$delaytime+$opentimestamp){
                     $opentimestamp = $t;
                 };
-                $count = intval($res[$i]['count'])+1;
+                $count = intval($r['count'])+1;
                 if($count<10){
                     $strcount ='000'.$count;
                 }else if($count<100){
@@ -36,17 +42,23 @@
                 $opentimestamp = $opentimestamp + $delaytime; 
                 $opencode = getOpenNum();
                 $opentime = date('Y-m-d h:i:s',$opentimestamp);
-                $sql="UPDATE pagekind SET count='$count',opentimestamp='$opentimestamp',opencode='$opencode',expect='$expect',opentime='$opentime' WHERE pid='$pid' AND pagename='$pagename'";
-                mysqli_query($connect,$sql);
+                //计算完成，将计算结果加入下一期开奖信息中
+                $sql = "UPDATE pagekind SET count='$count',opentimestamp='$opentimestamp',opencode='$opencode',expect='$expect',opentime='$opentime' WHERE pid='$pid' AND pagename='$pagename'";
+                if(add($connect,$sql)){
+                    require_once './computeget.php';
+                }
             }
-        }else if($pagename == '重庆时时彩'){
-
-        }else if($pagename == '北京赛车'){
-
         }
     }
     function getOpenNum(){
         return rand(0,9).','.rand(0,9).','.rand(0,9).','.rand(0,9).','.rand(0,9);
+    }
+    function add($connect,$sql){
+        mysqli_query($connect,$sql);
+        return mysqli_affected_rows($connect);
+    }
+    function fetchRows($connect,$sql){
+        return mysqli_fetch_all(mysqli_query($connect,$sql),MYSQLI_ASSOC);
     }
     function queryLocation($url,$post_data){
         $postdata = http_build_query($post_data);    

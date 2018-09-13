@@ -39,7 +39,7 @@
                 $array = explode('|',$pagenums);
                 for($j=0;$j<count($num);$j++){
                     $item = explode(',',$array[$j]);
-                    if(in_array($num[$j],$item,true)){
+                    if(in_array(strval($num[$j]),$item,true)){
                         $count ++;
                     }
                 }
@@ -49,7 +49,7 @@
                 $array = explode('|',$pagenums);
                 for($j=0;$j<count($num);$j++){
                     $item = explode(',',$array[$j]);
-                    if(in_array($num[$j],$item,true)){
+                    if(in_array(strval($num[$j]),$item,true)){
                         $count ++;
                     }
                 }
@@ -58,17 +58,7 @@
             case '前三':
                 $array = explode('|',$pagenums);
                 $str = $num[0].$num[1].$num[2];
-                print_r($str);
-                print_r('<br>');
-                print_r($array);
-                print_r('<br>');
-                $isGet = 0;
-                if(in_array($str,$array,true)){
-                    $isGet = 1;
-                }
-                print_r($isGet);
-                print_r('<br>');
-                if($isGet == 1){
+                if(in_array(strval($str),$array,true)){
                     $paytotal = 1000*$odds*$pagebei*$playkind;
                 }else{
                     $paytotal = 0;
@@ -77,11 +67,7 @@
             case '中三':
                 $array = explode('|',$pagenums);
                 $str = $num[1].$num[2].$num[3];
-                $isGet = false;
-                if(in_array($str,$array,true)){
-                    $isGet = true;
-                }
-                if($isGet == true){
+                if(in_array(strval($str),$array,true)){
                     $paytotal = 1000*$odds*$pagebei*$playkind;
                 }else{
                     $paytotal = 0;
@@ -90,11 +76,7 @@
             case '后三':
                 $array = explode('|',$pagenums);
                 $str = $num[2].$num[3].$num[4];
-                $isGet = false;
-                if(in_array($str,$array,true)){
-                    $isGet = true;
-                }
-                if($isGet == true){
+                if(in_array(strval($str),$array,true)){
                     $paytotal = 1000*$odds*$pagebei*$playkind;
                 }else{
                     $paytotal = 0;
