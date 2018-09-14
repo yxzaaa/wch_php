@@ -29,8 +29,12 @@
             ];
         };
     }else if($kind == 'check'){
-        $res = mysqli_fetch_all(mysqli_query($connect,"SELECT statelog,username FROM wch_users WHERE userid='$userid'"),MYSQLI_ASSOC);
+        $res = mysqli_fetch_all(mysqli_query($connect,"SELECT statelog,username,userpwd,userkind FROM wch_users WHERE userid='$userid'"),MYSQLI_ASSOC);
         if($res[0]['statelog'] == 1){
+            $_SESSION['uname'] = $res[0]['username'];
+            $_SESSION['upwd'] = $res[0]['userpwd'];
+            $_SESSION['uid'] = $userid;
+            $_SESSION['ukind'] = $res[0]['userkind'];
             $response = [
                 'code'=>200,
                 'uname'=>$res[0]['username'],
