@@ -27,6 +27,18 @@
                 'code' =>400
             ];
         }
+    }else if($kind == 'getpricelist'){
+        $res = mysqli_fetch_all(mysqli_query($connect,"SELECT username,getpay FROM news WHERE pagename='$pname' ORDER BY nid DESC LIMIT 10"),MYSQLI_ASSOC);
+        if($res){
+            $response = [
+                'code' =>200,
+                'data' =>$res
+            ];
+        }else{
+            $response = [
+                'code' =>400
+            ];
+        }
     }
     echo json_encode($response);
 ?>
