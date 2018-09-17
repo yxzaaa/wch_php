@@ -58,6 +58,18 @@
                 'code' =>400
             ];
         }
+    }else if($kind == 'gethis'){
+        $res = mysqli_fetch_all(mysqli_query($connect,"SELECT * FROM userpagehis WHERE userid='$userid' AND username='$username'"),MYSQLI_ASSOC);
+        if($res){
+            $response = [
+                'code' => 200,
+                'data' => $res
+            ];
+        }else{
+            $response = [
+                'code' =>400
+            ];
+        }
     }
     echo json_encode($response);
 ?>
