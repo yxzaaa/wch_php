@@ -59,7 +59,7 @@
             ];
         }
     }else if($kind == 'gethis'){
-        $res = mysqli_fetch_all(mysqli_query($connect,"SELECT * FROM userpagehis WHERE userid='$userid' AND username='$username'"),MYSQLI_ASSOC);
+        $res = mysqli_fetch_all(mysqli_query($connect,"SELECT * FROM userpagehis WHERE userid='$userid' AND username='$username' ORDER BY uhid DESC LIMIT 50"),MYSQLI_ASSOC);
         if($res){
             $response = [
                 'code' => 200,
