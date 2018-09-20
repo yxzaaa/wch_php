@@ -70,6 +70,18 @@
                 'code' =>400
             ];
         }
+    }else if($kind == 'getpagehis'){
+        $res = mysqli_fetch_all(mysqli_query($connect,"SELECT * FROM pagehis ORDER BY hid DESC LIMIT 50"),MYSQLI_ASSOC);
+        if($res){
+            $response = [
+                'code' => 200,
+                'data' => $res
+            ];
+        }else{
+            $response = [
+                'code' =>400
+            ];
+        }
     }
     echo json_encode($response);
 ?>
