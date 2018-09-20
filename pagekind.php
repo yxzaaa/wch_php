@@ -7,6 +7,8 @@
     @$pid = $_REQUEST['pid'];
     @$code = $_REQUEST['code'];
     @$expect = $_REQUEST['expect'];
+    @$pagestart = $_REQUEST['pagestart'];
+    @$pagesize = $_REQUEST['pagesize'];
     if($kind == 'gettab'){
         $res = mysqli_fetch_all(mysqli_query($connect,"SELECT pid,pagename,icon,pagepath,pageimg FROM pagekind WHERE userkind='$userkind'"),MYSQLI_ASSOC);
         if($res){
@@ -59,7 +61,43 @@
             ];
         }
     }else if($kind == 'gethis'){
-        $res = mysqli_fetch_all(mysqli_query($connect,"SELECT * FROM userpagehis WHERE userid='$userid' AND username='$username' ORDER BY uhid DESC LIMIT 50"),MYSQLI_ASSOC);
+        $res = mysqli_fetch_all(mysqli_query($connect,"SELECT * FROM userpagehis WHERE userid='$userid' AND username='$username' ORDER BY uhid DESC LIMIT $pagestart,$pagesize"),MYSQLI_ASSOC);
+        if($res){
+            $response = [
+                'code' => 200,
+                'data' => $res
+            ];
+        }else{
+            $response = [
+                'code' =>400
+            ];
+        }
+    }else if($kind == 'getpagehis'){
+        $res = mysqli_fetch_all(mysqli_query($connect,"SELECT * FROM pagehis ORDER BY hid DESC LIMIT $pagestart,$pagesize"),MYSQLI_ASSOC);
+        if($res){
+            $response = [
+                'code' => 200,
+                'data' => $res
+            ];
+        }else{
+            $response = [
+                'code' =>400
+            ];
+        }
+    }else if($kind == 'gethiscount'){
+        $res = mysqli_fetch_all(mysqli_query($connect,"SELECT COUNT(*) FROM userpagehis WHERE userid='$userid' AND username='$username'"));
+        if($res){
+            $response = [
+                'code' => 200,
+                'data' => $res
+            ];
+        }else{
+            $response = [
+                'code' =>400
+            ];
+        }
+    }else if($kind == 'getpagecount'){
+        $res = mysqli_fetch_all(mysqli_query($connect,"SELECT COUNT(*) FROM pagehis"));
         if($res){
             $response = [
                 'code' => 200,
