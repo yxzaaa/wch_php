@@ -4,7 +4,7 @@
     @$userid = $_REQUEST['userid'];
     if(isset($_SESSION['uname'])){
         session_destroy();
-        mysqli_query($connect,"UPDATE wch_users SET statelog=0 WHERE userid='$userid'");
+        mysqli_query($connect,"UPDATE wch_users SET statelog=0 WHERE userid='$userid' AND userstate=1");
         // $res = mysqli_affected_rows($connect);
         // if($res>0){
         $response = [

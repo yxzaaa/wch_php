@@ -263,6 +263,33 @@
                 'code' => 400
             ];
         }
+    }else if($kind == 'getallusers'){
+        $res = mysqli_fetch_row(mysqli_query($connect,"SELECT userkind FROM wch_users WHERE userid='$userid' AND username='$username' AND userstate=1"));
+        if($res[0] == 1){
+            $res = mysqli_fetch_all(mysqli_query($connect,"SELECT * FROM wch_users WHERE userstate=1"),MYSQLI_ASSOC);
+            if($res){
+                $response = [
+                    'code' => 200,
+                    'data' => $res
+                ];
+            }else{
+                $response = [
+                    'code' =>400
+                ];
+            }
+        }
+    }else if($kind == 'getuserhis'){
+        $res = mysqli_fetch_all(mysqli_query($connect,"SELECT * FROM userpagehis WHERE userid='$userid' AND username='$username' ORDER BY uhid DESC LIMIT 20"),MYSQLI_ASSOC);
+        if($res){
+            $response = [
+                'code' => 200,
+                'data' => $res
+            ];
+        }else{
+            $response = [
+                'code' =>400
+            ];
+        }
     }
     echo json_encode($response);
 ?>

@@ -8,7 +8,7 @@
     @$userid = $_REQUEST['userid'];
     @$kind = $_REQUEST['kind'];
     if($kind == 'login'){
-        $res = mysqli_fetch_all(mysqli_query($connect,"SELECT userid,userkind FROM wch_users WHERE username='$uname' AND userpwd='$upwd' AND prjid='$prjid'"),MYSQLI_ASSOC);
+        $res = mysqli_fetch_all(mysqli_query($connect,"SELECT userid,userkind FROM wch_users WHERE username='$uname' AND userpwd='$upwd' AND prjid='$prjid' AND userstate=1"),MYSQLI_ASSOC);
         if($res){
             $userid = $res[0]['userid'];
             $userkind = $res[0]['userkind'];
@@ -29,7 +29,7 @@
             ];
         };
     }else if($kind == 'check'){
-        $res = mysqli_fetch_all(mysqli_query($connect,"SELECT statelog,username,userpwd,userkind FROM wch_users WHERE userid='$userid'"),MYSQLI_ASSOC);
+        $res = mysqli_fetch_all(mysqli_query($connect,"SELECT statelog,username,userpwd,userkind FROM wch_users WHERE userid='$userid' AND userstate=1"),MYSQLI_ASSOC);
         if($res[0]['statelog'] == 1){
             $_SESSION['uname'] = $res[0]['username'];
             $_SESSION['upwd'] = $res[0]['userpwd'];
