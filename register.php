@@ -13,6 +13,8 @@
         mysqli_query($connect,"INSERT INTO wch_users VALUES(NULL,'$uname','$upwd','','123456','','','',0,0,1,'$prjid','$time',0,0)");
         $res = mysqli_affected_rows($connect);
         if($res>0){
+            $new = '您的初始资金密码为：123456，请及时修改！';
+            mysqli_query($connect,"INSERT INTO news VALUES(NULL,'$time','$uname','$new','initPwd','',0,0);");
             $response = [
                 'code' => 200,
                 'uname' => $uname,
